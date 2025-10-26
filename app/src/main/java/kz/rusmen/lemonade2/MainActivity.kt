@@ -95,7 +95,6 @@ fun Header(
 @Composable
 fun Content() {
     var currentStep by remember { mutableIntStateOf(1) }
-
     val currentLemon = when (currentStep) {
         1 -> lemon1
         2 -> lemon2
@@ -103,8 +102,25 @@ fun Content() {
         4 -> lemon4
         else -> lemon1
     }
-
     var squeeze = 1
+
+    fun getNextStep() {
+        when {
+            currentLemon.step == 1 -> currentStep = 2
+            currentLemon.step == 2 -> {
+                val num2to4 = if (squeeze == 1) (2..4).random() else (squeeze..4).random()
+                if (num2to4 > squeeze) {
+                    currentStep = 2
+                    squeeze++
+                } else {
+                    currentStep = 3
+                    squeeze = 1
+                }
+            }
+            currentLemon.step == 3 -> currentStep = 4
+            currentLemon.step == 4 -> currentStep = 1
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -115,23 +131,7 @@ fun Content() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                onClick = {
-                    when {
-                        currentLemon.step == 1 -> currentStep = 2
-                        currentLemon.step == 2 -> {
-                            val num2to4 = if (squeeze == 1) (2..4).random() else (squeeze..4).random()
-                            if (num2to4 > squeeze) {
-                                currentStep = 2
-                                squeeze++
-                            } else {
-                                currentStep = 3
-                                squeeze = 1
-                            }
-                        }
-                        currentLemon.step == 3 -> currentStep = 4
-                        currentLemon.step == 4 -> currentStep = 1
-                    }
-                },
+                onClick = { getNextStep() },
                 modifier = Modifier
                     .size(200.dp),
                 shape = RoundedCornerShape(32.dp),
