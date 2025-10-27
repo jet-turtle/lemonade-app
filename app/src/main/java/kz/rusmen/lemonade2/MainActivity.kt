@@ -68,7 +68,10 @@ val lemon4 = Lemon(4, R.drawable.lemon_restart, R.string.empty_glass_content_des
 
 @Composable
 fun LemonadeApp(modifier: Modifier = Modifier) {
-    Column {
+    Column(
+        modifier = Modifier
+            .background(color = colorResource(R.color.background))
+    ) {
         Header("Lemonade")
         Content()
     }
@@ -82,13 +85,13 @@ fun Header(
         text = name,
         color = Color.DarkGray,
         fontWeight = FontWeight.Bold,
-        fontSize = 18.sp,
+        fontSize = 20.sp,
         textAlign = TextAlign.Center,
         modifier = Modifier
             .fillMaxWidth()
             .background(color = colorResource(R.color.yellow))
             .statusBarsPadding()
-            .padding(16.dp)
+            .padding(top = 8.dp, bottom = 16.dp)
     )
 }
 
